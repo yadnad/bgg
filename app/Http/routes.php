@@ -11,9 +11,13 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
+
+Route::get('/', 'CollectionController@showCollection');
+Route::get('/refresh/{user}', 'CollectionController@refreshCollection');
 
 Route::get('home', 'HomeController@index');
+
+Route::get('/search', 'SearchController@index');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

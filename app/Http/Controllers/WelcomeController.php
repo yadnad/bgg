@@ -30,7 +30,7 @@ class WelcomeController extends Controller {
 	 */
 	public function index()
 	{
-		$results = DB::select('select * from users');
+		// $results = DB::select('select * from users');
 
 
 		return view('welcome');

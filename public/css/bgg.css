@@ -1,0 +1,53 @@
+.toolbar {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.search-grid tr img {
+    height: 80px;
+    width: auto;
+    max-width: 100px;
+}
+
+.thumbnail {
+    margin-bottom: 5px;
+}
+
+
+.thumbnail img {
+    height: 100px;
+    width: auto;
+}
+
+.thumbnail-row p {
+    text-align: center;
+}
+
+.search-grid .search-image {
+    text-align: center;
+}
+
+#keyword {
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.search-button {
+    margin-right: 5px;
+}
+
+.game-name {
+    width: 200px;
+}
+
+.user-name p {
+    margin: 0px auto;
+}
+
+.toolbar-refresh {
+    margin-left: 30px;
+}
+
+.game-stats {
+    text-align: center;
+}
