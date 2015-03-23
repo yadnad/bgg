@@ -55,9 +55,9 @@ return [
 		'mysql' => [
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'bgg',
-			'username'  => 'homestead',
-			'password'  => 'secret',
+			'database'  => 'dtech_bgg',
+			'username'  => 'dtech_bgg',
+			'password'  => 'M33p1#1Jaf09',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',

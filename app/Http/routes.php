@@ -17,7 +17,7 @@ Route::get('/refresh/{user}', 'CollectionController@refreshCollection');
 
 Route::get('home', 'HomeController@index');
 
-Route::get('/search', 'SearchController@index');
+Route::get('search', 'SearchController@index');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

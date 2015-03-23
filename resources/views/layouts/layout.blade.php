@@ -7,9 +7,9 @@
     <title>BGG Geek Buddy Games</title>
 
     <!-- Bootstrap -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/bootstrap-theme.min.css" rel="stylesheet">
-    <link href="/css/bgg.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="css/bgg.css" rel="stylesheet">
 
     @yield('head')
 
@@ -22,9 +22,9 @@
     <body>
         @yield('content')
 
-        <script src="/js/jquery-2.1.3.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
-        <script src="/js/bgg_main.js"></script>
+        <script src="js/jquery-2.1.3.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/bgg_main.js"></script>
         @yield('footer')
     </body>
 </html>

@@ -37,7 +37,7 @@ class CollectionController extends Controller {
      */
     public function showCollection()
     {
-        $geeks = Geek::all();
+        $geeks = Geek::orderBy('first_name')->get();
         $gameStats = $this->gameStats();
         $view = view('main')
                     ->with('geeks', $geeks)

@@ -15,56 +15,36 @@
             @foreach($games as $game)
             <tr>
                 <td class="search-image">
-                    <a href="http://boardgamegeek.com/boardgame/{{ $game->id }}" target="_blank">
-                        <img src="http://{{ $game->thumbnail }}" alt="{{{ $game->name }}}" width="180px">
+                    <a href="http://boardgamegeek.com/boardgame/{{ $game['id'] }}" target="_blank">
+                        <img src="http://{{ $game['thumbnail'] }}" alt="{{{ $game['name'] }}}" width="180px">
                     </a>
                 </td>
                 <td class="game-name">
-                    <a href="http://boardgamegeek.com/boardgame/{{ $game->id }}">{{{ $game->name }}}</a>
+                    <a href="http://boardgamegeek.com/boardgame/{{ $game['id'] }}">{{{ $game['name'] }}}</a>
                 </td>
                 <td class="user-name">
-                    @foreach($collections[$game->id] as $stats)
-                    <p>
-                        @if ($stats->own == '1')
-                            {{ $stats->first_name }} {{ $stats->last_name }}
-                        @endif
-                    </p>
+                    @foreach($game['owned'] as $owned)
+                        <p>{{ $owned }}</p>
                     @endforeach
                 </td>
-                <td>
-                    @foreach($collections[$game->id] as $stats)
-                    <p>
-                        @if ($stats->wishlist == '1')
-                            {{ $stats->first_name }} {{ $stats->last_name }} ({{ $priorities[$stats->wishlist_priority] }})
-                        @endif
-                    </p>
+                <td class="user-name">
+                    @foreach($game['wishlist'] as $wishlist)
+                        <p>{{ $wishlist }}</p>
                     @endforeach
                 </td>
-                <td>
-                    @foreach($collections[$game->id] as $stats)
-                    <p>
-                        @if ($stats->for_trade == '1')
-                            {{ $stats->first_name }} {{ $stats->last_name }}
-                        @endif
-                    </p>
+                <td class="user-name">
+                    @foreach($game['for_trade'] as $trade)
+                        <p>{{ $trade }}</p>
                     @endforeach
                 </td>
-                <td>
-                    @foreach($collections[$game->id] as $stats)
-                    <p>
-                        @if ($stats->want_to_play == '1')
-                            {{ $stats->first_name }} {{ $stats->last_name }}
-                        @endif
-                    </p>
+                <td class="user-name">
+                    @foreach($game['to_play'] as $toPlay)
+                        <p>{{ $toPlay }}</p>
                     @endforeach
                 </td>
-                <td>
-                    @foreach($collections[$game->id] as $stats)
-                    <p>
-                        @if ($stats->preordered == '1')
-                            {{ $stats->first_name }} {{ $stats->last_name }}
-                        @endif
-                    </p>
+                <td class="user-name">
+                    @foreach($game['preordered'] as $preordered)
+                        <p>{{ $preordered }}</p>
                     @endforeach
                 </td>
             </tr>

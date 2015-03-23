@@ -6,7 +6,7 @@ $('document').ready(function () {
     $("input[name='keyword']").focus().keyup(function() {
         clearTimeout(thread);
         var target = $(this);
-        thread = setTimeout(function() { searchCollection(target.val()); }, 400);
+        thread = setTimeout(function() { searchCollection(); }, 400);
     });
 
     $('.thumbview').click(function() {
@@ -19,21 +19,38 @@ $('document').ready(function () {
         searchCollection();
     })
 
+    $('.toolbar-form').on( "submit", function( event ) {
+        event.preventDefault();
+    })
+
 })
 
 
 function refreshCollection() {
-    $.get('/refresh/' + $('select[name="user"]').val());
+    $.get('refresh/' + $('select[name="user"]').val());
 }
 
 function searchCollection() {
-    var searchTerm = $("input[name='keyword']").val(),
-        displayType = $("input[name='format']").val();
+    var searchTerm  = $("input[name='keyword']").val(),
+        displayType = $("input[name='format']").val(),
+        userVal     = $("select[name='user']").val(),
+        ownedVal    = ($("#owned").is(':checked')) ? 1 : 0,
+        tradeVal    = ($("#trade").is(':checked')) ? 1 : 0,
+        wishlistVal = ($("#wishlist").is(':checked')) ? 1 : 0,
+        toPlayVal   = ($("#toplay").is(':checked')) ? 1 : 0,
+        preorderedVal = ($("#preordered").is(':checked')) ? 1 : 0;
 
-    if (searchTerm.length == 0) return;
-
-    $.get('/search',
-        { keyword: searchTerm, format: displayType },
+    $.get('search',
+        {
+            keyword: searchTerm,
+            format: displayType,
+            user: userVal,
+            owned: ownedVal,
+            trade: tradeVal,
+            wishlist: wishlistVal,
+            toplay: toPlayVal,
+            preordered: preorderedVal
+        },
         function(data) {
             $('.game-stats').hide();
             $('.search-results').html(data);

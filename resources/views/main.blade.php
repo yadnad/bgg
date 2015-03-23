@@ -6,10 +6,10 @@
 
     <div class="row game-stats">
         <div class="col-md-12">
-            <h1>{{ $stats['total'] }} Games owned</h1>
-            <h1>{{ $stats['play'] }} Want to be played</h1>
-            <h1>{{ $stats['trade'] }} Games for trade</h1>
-            <h1>{{ $stats['wishlist'] }} Games being wished for</h1>
+            <h2>{{ $stats['total'] }} Games owned</h2>
+            <h2>{{ $stats['play'] }} Want to be played</h2>
+            <h2>{{ $stats['trade'] }} Games for trade</h2>
+            <h2>{{ $stats['wishlist'] }} Games being wished for</h2>
         </div>
     </div>
 
