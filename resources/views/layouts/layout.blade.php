@@ -24,7 +24,7 @@
 
         <script src="js/jquery-2.1.3.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        <script src="js/bgg_main.js"></script>
+        <script src="js/bgg_main.min.js"></script>
         @yield('footer')
     </body>
 </html>

@@ -1,15 +1,17 @@
 
     <div class="col-md-1"></div>
     <div class="col-md-10">
+        <p class="search-count">{{ $count }}</p>
+        @if ($count > 0)
         <table class="table table-bordered search-grid">
             <thead>
                 <th></th>
-                <th>Name</th>
-                <th>Owned</th>
-                <th>Wishlist</th>
-                <th>For Trade</th>
-                <th>Want to Play</th>
-                <th>Preordered</th>
+                <th><span class="sortable" data-sort="name">Name</span></th>
+                <th><span data-sort="own">Owned</span></th>
+                <th><span data-sort="wishlist">Wishlist</span></th>
+                <th><span data-sort="for_trade">For Trade</span></th>
+                <th><span data-sort="want_to_play">Want to Play</span></th>
+                <th><span data-sort="preordered">Preordered</span></th>
             </thead>
             <tbody>
             @foreach($games as $game)
@@ -51,5 +53,14 @@
             @endforeach
             </tbody>
         </table>
+        @endif
     </div>
     <div class="col-md-1"></div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.sortable').click(function() {
+                sortResults($(this).attr('data-sort'));
+            });
+
+        })
+    </script>

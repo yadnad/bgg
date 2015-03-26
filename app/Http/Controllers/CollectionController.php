@@ -35,7 +35,7 @@ class CollectionController extends Controller {
      *
      * @return Response
      */
-    public function showCollection()
+    public function index()
     {
         $geeks = Geek::orderBy('first_name')->get();
         $gameStats = $this->gameStats();
@@ -53,28 +53,27 @@ class CollectionController extends Controller {
      */
     public function refreshCollection($geekId)
     {
-        Log::useFiles(storage_path().'/laravel.log');
-
         // Get the user info
         $geek = Geek::find($geekId);
         if (empty($geek)) return;
         $userName = $geek->first_name . ' ' . $geek->last_name;
         Log::info("Fetching {$userName}'s collection");
 
-        // Retrieve a list of all games in our database
-        $games = Game::select('id', 'name', 'thumbnail')->get();
+        // Retrieve a list IDs for all the games in our database
+        $games = Game::all()->modelKeys();
 
         // Retrieve the users currently stored collection
         $userGames = Collection::where('geek_id', $geekId)->lists('bgg_collection_id', 'game_id');
 
-        $bggXML = $this->fetchGames($geek);
+        // Get the collection XML from the BGG API
+        $bggXML = $this->fetchGames($geek, $userName);
 
         if ($bggXML === false) {
             echo "Error retrieving user's collection :(";
             return;
         }
 
-        // Create an array to hold all the game IDs in the latest collection
+        // Create an array to hold all the collection IDs from the latest collection
         $newCollection = array();
 
         foreach ($bggXML as $gameInfo) {
@@ -82,8 +81,8 @@ class CollectionController extends Controller {
             $newCollection[] = (int) $attributes->collid;
             $gameId = (int) $attributes->objectid;
 
-            // Check if we've already saved this game before
-            if (!$games->contains($gameId)) {
+            // Check if this game is in our games database
+            if (!in_array($gameId, $games)) {
                 $game = new Game();
                 $game->id        = $gameId;
                 $game->name      = $gameInfo->name;
@@ -91,7 +90,7 @@ class CollectionController extends Controller {
                 $game->thumbnail = str_replace('//', '', $gameInfo->thumbnail);
                 $game->image     = str_replace('//', '', $gameInfo->image);
                 $game->save();
-                $games->push($game);
+                $games[] = $gameId;
                 $allGames[$game->id] = $gameId;
             }
 
@@ -134,7 +133,7 @@ class CollectionController extends Controller {
             if (!in_array($collectionId, $newCollection)) {
                 Log::info('Deleting ' . $gameId);
                 $toDelete = Collection::find($gameId);
-                $toDelete->delete();
+                if ($toDelete) $toDelete->delete();
             }
         }
 
@@ -142,13 +141,13 @@ class CollectionController extends Controller {
     }
 
 
-    public function fetchGames($geek)
+    public function fetchGames($geek, $userName)
     {
         try {
             // Retrieve the users collection from BGG
             $url = self::API_URL . 'collection?username=' . $geek->bgg_username;
             $client = new \GuzzleHttp\Client();
-            $response = $client->get($url);
+            $response = $client->get($url, ['timeout' => 10, 'exceptions' => false]);
             $statusCode = $response->getStatusCode();
 
             if ($statusCode == 503) {
@@ -159,19 +158,24 @@ class CollectionController extends Controller {
 
             /**
              * If we get a 202 from BGG our request was queued.
-             * Wait a second and then try again for up to 10 seconds.
+             * Wait a few seconds then try again.
              */
-            $count = 0;
+            $count = 1;
             if ($statusCode == 202) {
-                while ($statusCode == 202 || $count == 10) {
-                    sleep(1);
-                    $response = $client->get($url);
+                while ($count <= 15) {
+                    Log::info("Status 202 ($count) when fetching collection for $userName");
+                    sleep(3);
+                    $response = $client->get($url, ['timeout' => 10, 'exceptions' => false]);
                     $statusCode == $response->getStatusCode();
+                    if ($statusCode == 200) break;
                     $count++;
                 }
             }
 
-            // TODO Add error message if we didn't get a response after 10 seconds
+            if ($statusCode != 200) {
+                Log::error("Failed to fetch collection for $userName: $statusCode");
+                return false;
+            }
 
             return new \SimpleXMLElement($response->getBody());
 
@@ -202,4 +206,27 @@ class CollectionController extends Controller {
 
     }
 
+    /**
+     * Get game info
+     *
+     */
+    public function getGameInfo($gameId)
+    {
+        try {
+            // Retrieve the game data from BGG
+            $url = self::API_URL . 'things?stats=1&id=' . $gameId;
+            $client = new \GuzzleHttp\Client();
+            $response = $client->get($url, ['timeout' => 10, 'exceptions' => false]);
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode == 503) {
+                return false;
+            }
+
+            $gameInfo = new \SimpleXMLElement($response->getBody());
+Log::info(print_r(array_keys($gameInfo->item),true));
+        } catch (Exception $e) {
+            Log::info(print_r($e->getMessage(),true));
+        }
+    }
 }

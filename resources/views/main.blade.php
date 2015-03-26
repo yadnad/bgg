@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     @include('toolbar', array('geeks' => $geeks))
 
     <div class="row game-stats">

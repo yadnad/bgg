@@ -12,12 +12,12 @@
 */
 
 
-Route::get('/', 'CollectionController@showCollection');
+Route::get('/', 'CollectionController@index');
 Route::get('/refresh/{user}', 'CollectionController@refreshCollection');
 
-Route::get('home', 'HomeController@index');
+Route::get('/search', 'SearchController@index');
 
-Route::get('search', 'SearchController@index');
+Route::get('/game/stats/{id}', 'CollectionController@getGameInfo');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
