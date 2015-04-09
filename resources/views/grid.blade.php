@@ -12,6 +12,7 @@
                 <th><span data-sort="for_trade">For Trade</span></th>
                 <th><span data-sort="want_to_play">Want to Play</span></th>
                 <th><span data-sort="preordered">Preordered</span></th>
+                <th><span data-sort="played">Played</span></th>
             </thead>
             <tbody>
             @foreach($games as $game)
@@ -47,6 +48,11 @@
                 <td class="user-name">
                     @foreach($game['preordered'] as $preordered)
                         <p>{{ $preordered }}</p>
+                    @endforeach
+                </td>
+                <td class="user-name">
+                    @foreach($game['played'] as $played)
+                        <p>{{ $played }}</p>
                     @endforeach
                 </td>
             </tr>

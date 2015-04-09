@@ -53,6 +53,7 @@ class SearchController extends Controller {
                                 'collections.want_to_play',
                                 'collections.for_trade',
                                 'collections.preordered',
+                                'collections.num_plays',
                                 'games.id',
                                 'games.name',
                                 'games.thumbnail',
@@ -98,7 +99,8 @@ class SearchController extends Controller {
                     'wishlist' => array(),
                     'for_trade' => array(),
                     'to_play' => array(),
-                    'preordered' => array()
+                    'preordered' => array(),
+                    'played' => array()
                 );
             }
             if ($game->own) $games[$game->id]['owned'][] = $game->full_name;
@@ -106,6 +108,7 @@ class SearchController extends Controller {
             if ($game->for_trade) $games[$game->id]['for_trade'][] = $game->full_name;
             if ($game->want_to_play) $games[$game->id]['want_to_play'][] = $game->full_name;
             if ($game->preordered) $games[$game->id]['preordered'][] = $game->full_name;
+            if ($game->num_plays) $games[$game->id]['played'][] = $game->full_name;
         }
 
         // Sort the user names for each category for each game
@@ -115,6 +118,7 @@ class SearchController extends Controller {
             asort($games[$id]['for_trade']);
             asort($games[$id]['to_play']);
             asort($games[$id]['preordered']);
+            asort($games[$id]['played']);
         }
 
         // Get the total to display

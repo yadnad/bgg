@@ -78,7 +78,7 @@ class CollectionController extends Controller {
 
         foreach ($bggXML as $gameInfo) {
             $attributes = $gameInfo->attributes();
-            $newCollection[] = (int) $attributes->collid;
+            $newCollection[(int) $attributes->collid] = true;
             $gameId = (int) $attributes->objectid;
 
             // Check if this game is in our games database
@@ -130,7 +130,7 @@ class CollectionController extends Controller {
 
         // Remove any games in the collection database that no longer exist in BGG
         foreach ($userGames as $gameId => $collectionId) {
-            if (!in_array($collectionId, $newCollection)) {
+            if (!isset($newCollection[$collectionId])) {
                 Log::info('Deleting ' . $gameId);
                 $toDelete = Collection::find($gameId);
                 if ($toDelete) $toDelete->delete();
@@ -224,7 +224,6 @@ class CollectionController extends Controller {
             }
 
             $gameInfo = new \SimpleXMLElement($response->getBody());
-Log::info(print_r(array_keys($gameInfo->item),true));
         } catch (Exception $e) {
             Log::info(print_r($e->getMessage(),true));
         }
